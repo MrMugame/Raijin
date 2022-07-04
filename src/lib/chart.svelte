@@ -3,8 +3,6 @@
 
     export let content;
 
-    console.log(content)
-
     const dateOffset = (24*60*60) * 5;
     const now = Math.floor(new Date().getTime() / 1000);
 
@@ -20,36 +18,25 @@
         return date.toLocaleDateString("de-DE")
     }
 
-    const getPoints = (key) => {
-        return content.map(x => {
-            return {
-                x: x.time,
-                y: x[key]
-            }
-        })
-    }
-
 </script>
 
 
-<div class="w-full aspect-video bg-gray-700">
+<div class="w-full aspect-video ">
     <Pancake.Chart x1={minx} x2={maxx} y1={miny} y2={maxy}>
-        <Pancake.Box x1={minx} x2={maxx} y1={miny} y2={maxy}>
-            <div class="w-full h-full border-black border-l-2 border-b-2 opacity-40"></div>
-        </Pancake.Box>
 
         <Pancake.Grid horizontal count={5} let:value>
-            <span class="absolute -left-5 -top-2.5 -translate-x-1/2">{value}</span>
+            <div class="w-full border-[1px]  {value != 0 ? "border-dashed" : "border-solid border-[#B5B6BA]" }"></div>
+            <span class="absolute left-0 top-0 -translate-y-full font-sans text-sm text-[#999]">{parseFloat(value.toFixed(1)).toString()} °C</span>
         </Pancake.Grid>
-
+        
         <Pancake.Grid vertical count={7} let:value>
-            <span class="absolute -left-1 -bottom-8 -translate-x-1/2">{toDateString(value)}</span>
+            <div class="h-full border-[1px] border-dashed"></div>
+            <span class="absolute -left-1  translate-y-full font-sans text-sm text-[#999] rotate-45">{toDateString(value)}</span>
         </Pancake.Grid>
 
         <Pancake.Svg>
-            <Pancake.SvgLine data={getPoints("temp")} let:d>
-                {@debug d}
-              <path class="stroke-red-600 stroke-2" {d}/>
+            <Pancake.SvgLine data={content} x="{d => d.time}" y="{d => d.temp}" let:d>
+              <path class="stroke-accent stroke-[1.5px] fill-transparent" style="stroke-linejoin: round; stroke-linecap: round;" {d}/>
             </Pancake.SvgLine>
         </Pancake.Svg>
     </Pancake.Chart>
