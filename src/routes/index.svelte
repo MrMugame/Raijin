@@ -15,7 +15,7 @@
 
 <main class="flex h-screen items-center flex-col pt-10" id="test">
     <h1 class="text-6xl font-sans font-light mb-10">Wetterstation</h1>
-    {#if content.length > 50}
+    {#if content.length > 1}
         <div class="text-lg">
             <a href="/" class="text-[#999]">Temperatur:</a> {current.temp}°C
             <a href="#hum" class="text-[#999] ml-2">Feuchtigkeit:</a> {current.hum}%

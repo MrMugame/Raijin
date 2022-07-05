@@ -12,3 +12,10 @@ npm run build
 ```
 
 You can preview the production build with `npm run preview`.
+
+## Docker build
+
+```bash
+docker build --no-cache -t sveltekit-docker:latest
+docker run -it --rm --name sveltekit-docker -p 3000:3000 sveltekit-docker:latest
+```
