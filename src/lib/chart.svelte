@@ -21,6 +21,8 @@
     miny -= margin;
     maxy += margin;
 
+    const middle = (maxy+miny) / 2
+
     const toDateString = (unix) => {
         const date = new Date(unix * 1000);
         return date.toLocaleDateString("de-DE")
@@ -33,7 +35,7 @@
     <Pancake.Chart x1={minx} x2={maxx} y1={miny} y2={maxy}>
 
         <Pancake.Grid horizontal count={5} let:value>
-            <div class="w-full border-[1px]  {value != 0 ? "border-dashed" : "border-solid border-[#B5B6BA]" }"></div>
+            <div class="w-full border-[1px]  {value != middle ? "border-dashed" : "border-solid border-[#B5B6BA]" }"></div>
             <span class="absolute left-0 top-0 -translate-y-full font-sans text-sm text-[#999]">{parseFloat(value.toFixed(1)).toString()} {unit}</span>
         </Pancake.Grid>
         
