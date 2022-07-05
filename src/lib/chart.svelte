@@ -2,6 +2,10 @@
     import * as Pancake from '@sveltejs/pancake';
 
     export let content;
+    export let type;
+
+    const unit = type === "temp" ? "°C" : (type === "pres" ? "hpa" : "%");
+
 
     const dateOffset = (24*60*60) * 5;
     const now = Math.floor(new Date().getTime() / 1000);
@@ -9,9 +13,13 @@
     const maxx = now;
     const minx = now - dateOffset;
 
-    const temps = content.map(x => x.temp);
-    const miny = Math.min(...temps);
-    const maxy = Math.max(...temps);
+    const vals = content.map(x => x[type]);
+    let miny = Math.min(...vals);
+    let maxy = Math.max(...vals);
+
+    const margin = ((maxy - miny) || 10) * 0.05;
+    miny -= margin;
+    maxy += margin;
 
     const toDateString = (unix) => {
         const date = new Date(unix * 1000);
@@ -26,7 +34,7 @@
 
         <Pancake.Grid horizontal count={5} let:value>
             <div class="w-full border-[1px]  {value != 0 ? "border-dashed" : "border-solid border-[#B5B6BA]" }"></div>
-            <span class="absolute left-0 top-0 -translate-y-full font-sans text-sm text-[#999]">{parseFloat(value.toFixed(1)).toString()} °C</span>
+            <span class="absolute left-0 top-0 -translate-y-full font-sans text-sm text-[#999]">{parseFloat(value.toFixed(1)).toString()} {unit}</span>
         </Pancake.Grid>
         
         <Pancake.Grid vertical count={7} let:value>
@@ -35,7 +43,7 @@
         </Pancake.Grid>
 
         <Pancake.Svg>
-            <Pancake.SvgLine data={content} x="{d => d.time}" y="{d => d.temp}" let:d>
+            <Pancake.SvgLine data={content} x="{d => d.time}" y="{d => d[type]}" let:d>
               <path class="stroke-accent stroke-[1.5px] fill-transparent" style="stroke-linejoin: round; stroke-linecap: round;" {d}/>
             </Pancake.SvgLine>
         </Pancake.Svg>
